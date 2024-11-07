@@ -219,7 +219,6 @@ Fehlerbehandlung:
             
 
         if missing_keys:
-
             print("missing keys: ", missing_keys)
 
         # Wenn Daten fehlen, werden die entsprechenden Fragen an den Benutzer gestellt
