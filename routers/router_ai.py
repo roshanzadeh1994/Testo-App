@@ -205,22 +205,28 @@ Fehlerbehandlung:
 
         # Überprüfung auf fehlende Daten
         required_keys = ['inspection location', 'ship name', 'inspection date', 'inspection details', 'numerical value']
+
+        ai_user_data['numerical value'] = float(ai_user_data['numerical value'])
+
         missing_keys = [key for key in required_keys if key not in ai_user_data or not ai_user_data[key]]
+       
+        
 
         # Überprüfung des numerischen Wertes
         if 'numerical value' in ai_user_data:
-            try:
-                ai_user_data['numerical value'] = float(ai_user_data['numerical value'])
-            except ValueError:
-                missing_keys.append('numerical value')
+            
+            ai_user_data['numerical value'] = int(ai_user_data['numerical value'])
+            
 
-        print("missing keys: ", missing_keys)
+        if missing_keys:
+
+            print("missing keys: ", missing_keys)
 
         # Wenn Daten fehlen, werden die entsprechenden Fragen an den Benutzer gestellt
         if missing_keys:
             questions = request_additional_information(missing_keys)
             return templates.TemplateResponse("missing_data2.html", {"request": request, "questions": questions,
-                                                                     "provided_data": json.dumps(ai_user_data)})
+                                                                     "provided_data": json.dumps(ai_user_data), "ai_user_data": ai_user_data})
 
         # Datumsformatierung
         if ai_user_data["inspection date"]:
